@@ -9,6 +9,11 @@ import java.util.List;
 
 public class MessageDAO {
 
+    /**
+     * Creates a new message.
+     * @param message the message to be created.
+     * @return message.
+     */
     public Message createMessage(Message message) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -33,9 +38,13 @@ public class MessageDAO {
             System.out.println(e.getMessage());
         }
 
-        return null;
+        return null; // Creation failed
     }
     
+    /**
+     * Retrieves all messages.
+     * @return list of all messages.
+     */
     public List<Message> getAllMessages() {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
@@ -50,12 +59,17 @@ public class MessageDAO {
                         rs.getLong("time_posted_epoch"));
                 messages.add(msg);
             }
-        }catch(SQLException e){
+        } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
         return messages;
     }
 
+    /**
+     * Retrieves message by ID.
+     * @param id the ID of the message.
+     * @return message.
+     */
     public Message getMessageById(int id) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -74,9 +88,14 @@ public class MessageDAO {
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return null; // Retrieval failed
     }
 
+    /**
+     * Deletes an message.
+     * @param id the ID of the message.
+     * @return deleted message.
+     */
     public Message deleteMessage(int id) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -90,9 +109,15 @@ public class MessageDAO {
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return null; // Deletion failed
     }
 
+    /**
+     * Updates a message.
+     * @param id the ID of the message.
+     * @param text the new message text.
+     * @return updated message.
+     */
     public Message updateMessage(int id, String text) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -106,9 +131,14 @@ public class MessageDAO {
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return null; // Retrieval failed
     }
 
+    /**
+     * Retrieves all messages from an account.
+     * @param id the ID of the account.
+     * @return list with account's messages.
+     */
     public List<Message> getMessagesByAcc(int id) {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
@@ -118,7 +148,7 @@ public class MessageDAO {
             preparedStatement.setInt(1, id);
 
             ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()){
+            while(rs.next()) {
                 Message msg = new Message(rs.getInt("message_id"),
                         rs.getInt("posted_by"),
                         rs.getString("message_text"),

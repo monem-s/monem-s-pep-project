@@ -5,8 +5,14 @@ import Util.ConnectionUtil;
 
 import java.sql.*;
 
+
 public class AccountDAO {
     
+    /**
+     * Creates an account.
+     * @param acc the account to be created.
+     * @return new account.
+     */
     public Account createAccount(Account acc) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -29,9 +35,14 @@ public class AccountDAO {
             System.out.println(e.getMessage());
         }
 
-        return null;
+        return null; // Account creation failed
     }
 
+    /**
+     * Gets an account by ID.
+     * @param id the ID of the account.
+     * @return account.
+     */
     public Account getAccountById (int id) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -40,7 +51,7 @@ public class AccountDAO {
             preparedStatement.setInt(1, id);
 
             ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()){
+            while(rs.next()) {
                 Account a = new Account(rs.getInt("account_id"),
                         rs.getString("username"),
                         rs.getString("password"));
@@ -49,15 +60,20 @@ public class AccountDAO {
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return null; // Retrieval failed
     }
 
-    public Account getAccountByUsername (String s) {
+    /**
+     * Gets an account by username.
+     * @param username the username of the account.
+     * @return account.
+     */
+    public Account getAccountByUsername (String username) {
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "SELECT * FROM account WHERE username = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, s);
+            preparedStatement.setString(1, username);
 
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -69,9 +85,14 @@ public class AccountDAO {
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return null; // Retrieval failed
     }
 
+    /**
+     * Logs into an account if valid credentials are provided.
+     * @param acc the account to be logged into.
+     * @return account.
+     */
     public Account loginAccount (Account acc) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -81,7 +102,7 @@ public class AccountDAO {
             preparedStatement.setString(2, acc.getPassword());
 
             ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()){
+            while(rs.next()) {
                 Account a = new Account(rs.getInt("account_id"),
                         rs.getString("username"),
                         rs.getString("password"));
@@ -90,7 +111,7 @@ public class AccountDAO {
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return null; // login failed
     }
 
 }

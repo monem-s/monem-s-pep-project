@@ -49,13 +49,16 @@ public class SocialMediaController {
     /**
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
-     */
+    */
     private void exampleHandler(Context context) {
         context.json("sample text");
     }
+    
 
     /**
+     * Handler to register a new account.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
      */
     private void registerHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -64,12 +67,15 @@ public class SocialMediaController {
         if (accReg != null) {
             context.json(mapper.writeValueAsString(accReg));
         } else {
+            // Client error - Registration not successful
             context.status(400);
         }    
     }
 
     /**
+     * Handler to login an account.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
      */
     private void loginHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -78,12 +84,15 @@ public class SocialMediaController {
         if (accLogged != null) {
             context.json(mapper.writeValueAsString(accLogged));
         } else {
+            // Unauthorized - Login not successful
             context.status(401);
         }
     }
 
     /**
+     * Handler to post a message.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
      */
     private void postMessageHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -97,13 +106,16 @@ public class SocialMediaController {
             if (addedMsg != null) {
                 context.json(mapper.writeValueAsString(addedMsg));
             } else {
+                // Client error - post not successful
                 context.status(400);
             }
         }
     }
 
     /**
+     * Handler to retrieve all messages.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
      */
     private void getAllMessagesHandler(Context context) throws JsonProcessingException {
         List<Message> messages = messageService.getAllMessages();
@@ -111,6 +123,7 @@ public class SocialMediaController {
     }
 
     /**
+     * Handler to get a message by ID.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void getMessageByIdHandler(Context context) {
@@ -124,6 +137,7 @@ public class SocialMediaController {
     }
 
     /**
+     * Handler to delete a message.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void deleteMessageHandler(Context context) {
@@ -137,7 +151,9 @@ public class SocialMediaController {
     }
 
     /**
+     * Handler to update a message.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
      */
     private void updateMessageHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -147,11 +163,13 @@ public class SocialMediaController {
         if (msg != null) {
             context.json(msg);
         } else {
+            // Client error - Update not successful
             context.status(400);
         }
     }
 
     /**
+     * Handler to retrieve messages from an account.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void getMessagesByAccountHandler(Context context) {
